@@ -7,6 +7,15 @@ import http from 'http';
 const turndown = new TurndownService();
 
 export default function handler(req: VercelRequest, res: VercelResponse) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+  
   const targetUrl = req.query.url as string;
   if (!targetUrl) return res.status(400).json({ error: "Missing URL" });
 
